@@ -1,0 +1,32 @@
+@model ProductosApi.Controllers.Models.Producto
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Detalles del producto</h2>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+
+            <dt class="col-sm-3">Nombre</dt>
+            <dd class="col-sm-9">@Model.nombre</dd>
+
+            <dt class="col-sm-3">Precio</dt>
+            <dd class="col-sm-9">@Model.precio</dd>
+
+            <dt class="col-sm-3">Fecha de Registro</dt>
+            <dd class="col-sm-9">@Model.fecha_registro.ToString()</dd>
+
+            <dt class="col-sm-3">Cantidad</dt>
+            <dd class="col-sm-9">@Model.cantidad</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Volver</a>
+    </div>
+</div>

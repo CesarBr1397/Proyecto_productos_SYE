@@ -1,0 +1,45 @@
+@model ProductosApi.Controllers.Models.Producto
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Eliminar Producto</h1>
+
+<div class="card">
+    <div class="card-header">
+        <h2>¿Estás seguro de que deseas eliminar este producto?</h2>
+    </div>
+    <div class="card-body">
+        <form action="/Home/Borrar" method="post">
+
+            <input type="hidden" name="idproducto" value="@Model.idproducto" />
+
+            <div class="form-group mb-3">
+                <label for="nombre">Nombre:</label>
+                <input value="@Model.nombre" type="text" name="nombre" class="form-control" readonly />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="precio">Precio:</label>
+                <input name="precio" class="form-control" value="@Model.precio" rows="3" readonly>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="cantidad">Cantidad:</label>
+                <input type="text" value="@Model.cantidad" class="form-control" readonly />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="fecha_registro">Fecha de registro:</label>
+                <input type="date" value="@Model.fecha_registro.ToString("yyyy-MM-dd")" class="form-control" readonly />
+            </div>
+
+            <input type="hidden" name="estado" value="@(Model.estado ? "true" : "false")" />
+
+            <!-- Botones -->
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>

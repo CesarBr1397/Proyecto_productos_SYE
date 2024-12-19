@@ -1,0 +1,44 @@
+@model IEnumerable<ProductosApi.Controllers.Models.Producto>
+
+@{
+    ViewData["Title"] = "Productos";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Agregar nuevo producto</h1>
+
+<form action="/Home/Agregar" method="post">
+    <div>
+        <label for="nombre">Nombre:</label>
+        <input type="text"  name="nombre" class="form-control">
+    </div>
+    <br>
+    <div>
+        <label for="descripcion">Precio:</label>
+        <input type="number" name="precio" class="form-control" rows="4"></input>
+    </div>
+    <br>
+    <div>
+        <label for="fecha_registro">Cantidad:</label>
+        <input type="number" name="cantidad" class="form-control" >
+    </div>
+    <br>
+    <div>
+        <label for="fecha_inicio">Fecha de registro:</label>
+        <input type="date" name="fecha_registro" class="form-control" >
+    </div>
+    <br>
+    <div>
+        <select id="estado" name="estado" class="form-select" hidden>
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+        </select>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="/Home/Atras" class="btn btn-danger">Atrás</a>
+
+</form>
