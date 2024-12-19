@@ -85,16 +85,7 @@ namespace ProductosApi.Controllers
         // Obtener todos los productos activos
         public async Task<IActionResult> Index()
         {
-            // Ruta al archivo SQL
-            var SqlRuta = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Funciones", "obtener_productos.sql");
-
-            // Lee el contenido del archivo
-            var sqlScript = await System.IO.File.ReadAllTextAsync(SqlRuta);
-
-            // Ejecuta el script y obtiene los datos
-            var productos = await _context.productos
-                .FromSqlRaw(sqlScript)
-                .ToListAsync();
+            var productos = await _context.productos.FromSqlRaw("SELECT * FROM schemasye.obtener_productos()").ToListAsync();
 
             return View(productos);
         }
@@ -108,13 +99,12 @@ namespace ProductosApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Agregar(Producto producto)
         {
-            // Ruta al archivo SQL
-            string rutaArchivo = Path.Combine(Directory.GetCurrentDirectory(), "data", "Funciones", "insertar_producto.sql");
-
-            // Leer el contenido del archivo SQL
-            string scriptSql = await System.IO.File.ReadAllTextAsync(rutaArchivo);
-
-            await _context.Database.ExecuteSqlRawAsync(scriptSql, producto.nombre, producto.precio, producto.cantidad, producto.fecha_registro, producto.estado);
+            await _context.Database.ExecuteSqlRawAsync("SELECT * FROM schemasye.insertar_producto({0}, {1}, {2}, {3}, {4})", 
+            producto.nombre, 
+            producto.precio, 
+            producto.cantidad, 
+            producto.fecha_registro, 
+            producto.estado);
 
             return RedirectToAction("Index");
         }
@@ -123,7 +113,7 @@ namespace ProductosApi.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var producto = await _context.productos
-                .FromSqlRaw("SELECT * FROM obtener_producto_por_id({0})", id)
+                .FromSqlRaw("SELECT * FROM schemasye.obtener_producto_por_id({0})", id)
                 .FirstOrDefaultAsync();
 
             return View("Mostrar_id", producto);
@@ -133,7 +123,7 @@ namespace ProductosApi.Controllers
         public async Task<IActionResult> Update(int id)
         {
             var producto = await _context.productos
-                .FromSqlRaw("SELECT * FROM obtener_producto_por_id({0})", id)
+                .FromSqlRaw("SELECT * FROM schemasye.obtener_producto_por_id({0})", id)
                 .FirstOrDefaultAsync();
 
             return View("Update", producto);
@@ -143,7 +133,7 @@ namespace ProductosApi.Controllers
         public async Task<IActionResult> Update(Producto producto)
         {
             await _context.Database.ExecuteSqlRawAsync(
-                "SELECT actualizar_producto({0}, {1}, {2}, {3}, {4}, {5})",
+                "SELECT schemasye.actualizar_producto({0}, {1}, {2}, {3}, {4}, {5})",
                 producto.idproducto, producto.nombre, producto.precio, producto.cantidad, producto.fecha_registro, producto.estado);
 
             return RedirectToAction("Index");
@@ -153,7 +143,7 @@ namespace ProductosApi.Controllers
         public async Task<IActionResult> Borrar(int id)
         {
             var producto = await _context.productos
-                .FromSqlRaw("SELECT * FROM obtener_producto_por_id({0})", id)
+                .FromSqlRaw("SELECT * FROM schemasye.obtener_producto_por_id({0})", id)
                 .FirstOrDefaultAsync();
 
             return View("Delete", producto);
@@ -163,7 +153,7 @@ namespace ProductosApi.Controllers
         public async Task<IActionResult> Borrar(Producto producto)
         {
             await _context.Database.ExecuteSqlRawAsync(
-                "SELECT eliminar_producto({0})", producto.idproducto);
+                "SELECT schemasye.eliminar_producto({0})", producto.idproducto);
 
             return RedirectToAction("Index");
         }
